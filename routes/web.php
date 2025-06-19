@@ -7,9 +7,11 @@ use App\Http\Controllers\Pages\KategoriController;
 use App\Http\Controllers\Pages\ProductController;
 use App\Http\Controllers\Pages\PurchaseController;
 use App\Http\Controllers\Pages\ReceivedController;
+use App\Http\Controllers\Pages\ReportController;
 use App\Http\Controllers\Pages\ReturController;
 use App\Http\Controllers\Pages\RolesController;
 use App\Http\Controllers\Pages\SupplierController;
+use App\Http\Controllers\Pages\TransactionController;
 use App\Http\Controllers\Pages\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -127,4 +129,27 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/{id}/update', [ReturController::class, 'update'])->name('retur.update');
             Route::delete('/{id}/destroy', [ReturController::class, 'destroy'])->name('retur.destroy');
         });
+
+    Route::prefix('transaction')
+        ->group(function () {
+            Route::get('/', [TransactionController::class, 'index'])->name('transaction');
+            Route::get('/create', [TransactionController::class, 'create'])->name('transaction.create');
+            Route::get('/getProduct', [TransactionController::class, 'getProduct'])->name('transaction.getProduct');
+            Route::post('/store', [TransactionController::class, 'store'])->name('transaction.store');
+            Route::get('/{id}/edit', [TransactionController::class, 'edit'])->name('transaction.edit');
+            Route::put('/{id}/update', [TransactionController::class, 'update'])->name('transaction.update');
+            Route::put('/{id}/updateStatus', [TransactionController::class, 'updateStatus'])->name('transaction.updateStatus');
+            Route::delete('/{id}/destroy', [TransactionController::class, 'destroy'])->name('transaction.destroy');
+            Route::get('/{invoice}/export', [TransactionController::class, 'export'])->name('transaction.export');
+        });
+
+    Route::prefix('report')->group(function () {
+        Route::get('/purchase', [ReportController::class, 'index'])->name('report.purchase');
+        Route::get('/purchase/{code}/detail', [ReportController::class, 'detailPurchase'])->name('report.detailPurchase');
+        Route::get('/purchase/{code}/export', [ReportController::class, 'exportPurchase'])->name('report.purchase.export');
+        Route::get('/retur', [ReportController::class, 'retur'])->name('report.retur');
+        Route::get('/retur/export', [ReportController::class, 'exportRetur'])->name('report.export');
+        Route::get('/sale', [ReportController::class, 'sale'])->name('report.sale');
+        Route::get('/sale/export', [ReportController::class, 'exportSale'])->name('report.transaction.export');
+    });
 });

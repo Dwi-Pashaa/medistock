@@ -153,7 +153,11 @@ class PurchaseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Purchase::find($id);
+
+        $data->delete();
+
+        return response()->json(['code' => 200, 'status' => 'success', 'message' => 'Data berhasil di hapus']);
     }
 
     public function getProduct(Request $request)
